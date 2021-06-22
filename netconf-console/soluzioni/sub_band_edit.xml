@@ -1,0 +1,12 @@
+<edit-config> <target> <candidate/> </target>
+  <config>
+  <interface-configurations xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
+   <interface-configuration>
+   <active>act</active>
+   <interface-name>GigabitEthernet0/0/0/2.1</interface-name>
+    <description>bandwidth = 350 </description>
+<bandwidth>350</bandwidth>
+     </interface-configuration>
+  </interface-configurations>
+ </config>
+</edit-config>

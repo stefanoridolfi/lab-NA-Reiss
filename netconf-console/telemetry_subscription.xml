@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<get-config>
+<source> <running/> </source>
+<filter>
+<telemetry-model-driven xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-telemetry-model-driven-cfg">
+<subscriptions/>
+</telemetry-model-driven>
+</filter>
+</get-config>

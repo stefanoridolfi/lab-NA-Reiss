@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<get>
+<filter>
+<ospf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ipv4-ospf-oper">
+</ospf>
+</filter>
+</get>

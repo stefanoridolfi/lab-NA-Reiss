@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<get>
+<filter>
+<system-monitoring  xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-wdsysmon-fd-oper">
+</system-monitoring>
+<cpu-utilization/>
+</filter>
+</get>
