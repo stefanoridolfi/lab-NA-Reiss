@@ -1,0 +1,111 @@
+1) Esempio di codifica usando protobuf
+root@Ubuntu18:~/Protobus_example/example_base# 
+Test_single_1.py  Test_single_pb2.py  Test_single.proto
+Per demo: python3 Test_single_1.py
+
+
+2) Esempi per gnmi+protobuf con client che invia un intero al sever che calcola una espressione e la restituice al client il risultato
+root@Ubuntu18:~/Protobus_example/grpc/examples/python/data_transmission# python3 server.py
+
+root@Ubuntu18:~/Protobus_example/grpc/examples/python/data_transmission# python3 client.py
+root@Ubuntu18:~/Protobus_example/grpc/examples/python/data_transmission# python3 server.py
+
+
+3) YANG catalog 
+https://yangcatalog.org/
+Using yang search function: https://yangcatalog.org/yang-search/
+Cisco-IOS-XR-nto-misc-oper: after found it look at the tree: 
+
+4) Pyang :Esempio di uso di pyang
+root@Ubuntu18:~/XR6.5.1# source test_pyang/bin/activate
+NB. L'env e' stato creato sotto root/XR6.5.1
+source test_pyang/bin/activate
+pyang -f tree /home/user/yang-explorer/v/bin/share/yang/modules/ietf/ietf-routing.yang
+pyang -f tree /root/XR6.5.1/yang_models/vendor/cisco/xr/651/openconfig-telemetry.yang 
+Genera descrizione XML di un modulo YANG
+pyang -f  sample-xml-skeleton /home/user/yang-explorer/v/bin/share/yang/modules/ietf/ietf-routing.yang
+deactivate
+
+5) ssh subsystem
+ssh admin@1.1.1.1  -p 830 -s netconf
+
+6) Netconf-console 
+Esempi di utilizzo di netconf-console  per recuperare la tabella di routing usando il filtro XPATH e subtree filter
+root@Ubuntu18:~/CSR1000v_16.12.3/esempi_net-console# 
+netconf-console --host=2.2.2.2 --port=830 -u cisco -p cisco --get-config -x /routing
+
+USANDO: root@Ubuntu18:~/CSR1000v_16.12.3/esempi_net-console# 
+netconf-console --host=2.2.2.2 --port=830 -u cisco -p cisco --rpc route1.xml 
+si ha  lo stesso risultato ma si e' usato usato subtree filter
+
+Esempi per vedere le subscription configurate e supportate
+root@Ubuntu18:~/CSR1000v_16.12.3/esempi_net-console/MDT# netconf-console --host=2.2.2.2 --port=830 -u cisco -p cisco --rpc get_all_subsc
+riptions_MDT.xml
+root@Ubuntu18:~/CSR1000v_16.12.3/esempi_net-console/MDT# netconf-console --host=2.2.2.2 --port=830 -u cisco -p cisco --rpc get_streams_M
+DT.xml (lista modi di subscription supportate)
+
+
+7) ncclient 
+root@Ubuntu18:~/XR6.5.1/esempi_ncclient/final#
+python3 get-capability.py
+python3 get-config.py
+python3 if_single_all_get_running.py
+python3 if_single_get.py GigabitEthernet0/0/0/2 running
+python3  if_single_edit.py running  : edit description di GigabitEthernet0/0/0/2
+python3 if_single_get.py GigabitEthernet0/0/0/2 running
+
+8) gmic
+Gnmic , Gnmi client, per test metodi definiti in gNMI , get request 
+root@Ubuntu18:~/gnmic# more appunti.txt
+gnmic -a 1.1.1.1:57502 --format prototext -e json_ietf -u admin -p admin --insecure get --path\
+ "Cisco-IOS-XR-nto-misc-oper:memory-summary/nodes/node/"
+NB: su yangcatalog cercare il modulo Cisco-IOS-XR-nto-misc-oper
+
+gnmic -a 1.1.1.1:57502 --format prototext -e json_ietf -u admin -p admin --insecure get --path "openconfig-interfaces:interfaces"
+get si puo'  usare con le opzioni type:  ALL, CONFIG,STATE, OPERATIONAL
+NB: su yangcatalog cercare il modulo openconfig-interfaces
+
+9) pyGNMI
+Esempio uso pygnmi libreria pyGNMI python per dynamic sub
+python3 -m venv pyGNMI: ho creato questo virtualenv in pyGNMI
+source pyGNMI/bin/activate
+pyGNMI) root@Ubuntu18:~/pyGNMI#
+pyGNMI_DYNAMIC_Dial_in_encoding_proto_ONCE.py : 
+sottoscrizione di: path': 'openconfig-interfaces:interfaces/interface[name=GigabitEthernet0/0/0/0]'   
+che mi da loutput una sola volta
+
+pyGNMI_DYNAMIC_Dial_in_encoding_proto_STREAM_sub2.py : 
+sottoscrizione di: path': 'openconfig-interfaces:interfaces/interface[name=GigabitEthernet0/0/0/0]'   
+che mi da l'output ogni timeout
+
+pyGNMI_DYNAMIC_Dial_in_encoding_proto_ON_CHANGE.py  'openconfig-interfaces:interfaces/interface[name=GigabitEthernet0/0/0/0]'   -
+di che mi da l'output se ho cambiamenti su interafccia: 
+esempio cambiare la descrizione o lo stato up/down per generare la notifica
+
+
+
+./capability.py  ottengo le capabilities
+
+Per vedere sub attive su XR: show telemetry model-driven subscription (si notano le sub dinamiche create da pyGNMI)
+NB. Dalloutput capability.py:
+'supported_encodings': ['json_ietf', 'ascii'], 'gnmi_version': '0.4.0'} ma con demo con diversi tipi di codifica funzionava anche json, 
+
+e le due modalit del GPB. Questo perch il servizio RPC 
+su gNMI NON  los stesso di quello definite nel RPC usato nella libreria per il test , che  fornito da Cisco. 
+
+10) dynamic subscription NETCONF 
+root@Ubuntu18:~/CSR1000v_16.12.3/esempi_net-console/MDT#
+streaming dymamic subcription
+lanciare netconf-console in modo interattivo :netconf-console --host=2.2.2.2 --port=830 -u cisco -p cisco -i
+lanciare rpc create_dynamic_subscription_generic-counter.xml
+digitare create-subscription
+SUL CSR per vedere le subscription attive: show telemetry ietf subscription all/dynamic details
+
+11) gRPC client: DEMO PER DIVERSI TIPi DI CODIFICA GPB subscription dinamica ma su subscription gi configurata su XR (Sub2)
+root@Ubuntu18:~/telemetry-grpc-collectors/clients/python# ./telemetry_client_json_GPBKV_GPBCompact_3.py
+
+12) mdt Cisco XR per provare la telemetria
+per vedere la lista dei moduli YANG:  run   cd /pkg/yang  ls
+per provare dei sensor-path direttamente su Cisco XR:
+mdt_exec -s Cisco-IOS-XR-wdysymon-fd-oper:system-monitor/cpu-utilitation -c 10000
+
