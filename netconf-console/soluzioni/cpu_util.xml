@@ -2,7 +2,7 @@
 <get>
 <filter>
 <system-monitoring  xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-wdsysmon-fd-oper">
+  <cpu-utilization/>
 </system-monitoring>
-<cpu-utilization/>
 </filter>
 </get>
